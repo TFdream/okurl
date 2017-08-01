@@ -23,7 +23,7 @@ public class OkURLTest {
 
         Response response = client.execute(request);
         if (!response.isSuccessful())
-            throw new IOException("Unexpected code " + response);
+            throw new IOException("Unexpected code:" + response.code());
 
         System.out.println("Server: " + response.header("Server"));
         System.out.println("Date: " + response.header("Date"));

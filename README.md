@@ -14,19 +14,18 @@ The minimum requirements to run the quick start are:
 ### 1. maven dependency
 ```
 <dependency>
-	<groupId>com.mindflow</groupId>
+    <groupId>com.mindflow</groupId>
 	<artifactId>okurl</artifactId>
 	<version>0.1.0</version>
 </dependency>
 ```
 
-### 2. get
+### 2. http get
 ```
     private final OkUrlClient client = new OkUrlClient();
-    
-    @Test
+
     public void run() throws IOException {
-        
+
         Request request = new Request.Builder()
                 .url("https://www.baidu.com/")
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36")
@@ -36,7 +35,7 @@ The minimum requirements to run the quick start are:
 
         Response response = client.execute(request);
         if (!response.isSuccessful())
-            throw new IOException("Unexpected code " + response);
+            throw new IOException("Unexpected code:" + response.code());
 
         System.out.println("Server: " + response.header("Server"));
         System.out.println("Date: " + response.header("Date"));
@@ -44,3 +43,5 @@ The minimum requirements to run the quick start are:
         System.out.println(response.body().string());
     }
 ```
+
+### 3. http post
