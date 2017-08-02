@@ -1,9 +1,10 @@
 package okurl;
 
+import okurl.internal.BufferedSink;
+import okurl.internal.BufferedSource;
 import okurl.util.Util;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -50,15 +51,14 @@ public class URLConnectionProxy {
 
         //4.
         if(requiresRequestBody) {
-            OutputStream out = urlConnection.getOutputStream();
-            out.write(request.getBody().getBytes());
-            out.flush();
-            out.close();
+            BufferedSink sink = new BufferedSink(urlConnection.getOutputStream());
+            request.getBody().writeTo(sink);
+            sink.close();
         }
 
         //5.
         ResponseBody body = new ResponseBody.Builder()
-                .stream(urlConnection.getInputStream())
+                .source(new BufferedSource(urlConnection.getInputStream()))
                 .contentLength(urlConnection.getContentLength())
                 .contentType(urlConnection.getContentType())
                 .build();

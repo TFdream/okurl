@@ -1,8 +1,11 @@
 package okurl.util;
 
 import okurl.HttpMethod;
-import okurl.internal.BufferedStream;
+import okurl.internal.BufferedSource;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 public abstract class Util {
 
     public static final Charset UTF_8 = StandardCharsets.UTF_8;
+
+    public static final String UTF8 = "utf-8";
 
     public static int checkDuration(String name, long duration, TimeUnit unit) {
         if (duration < 0) throw new IllegalArgumentException(name + " < 0");
@@ -34,7 +39,23 @@ public abstract class Util {
 
     }
 
-    public static Charset bomAwareCharset(BufferedStream stream, Charset charset) {
+    public static Charset bomAwareCharset(BufferedSource stream, Charset charset) {
         return charset;
+    }
+
+    public static String encode(String data) {
+        try {
+            return URLEncoder.encode(data, UTF8);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("unknown charset:"+UTF8);
+        }
+    }
+
+    public static String decode(String data) {
+        try {
+            return URLDecoder.decode(data, UTF8);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("unknown charset:"+UTF8);
+        }
     }
 }

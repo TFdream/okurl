@@ -1,5 +1,6 @@
 package okurl;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ public class OkURLTest {
     private final OkUrlClient client = new OkUrlClient();
 
     @Test
-    public void run() throws IOException {
+    public void runGet() throws IOException {
 
         Request request = new Request.Builder()
                 .url("https://www.baidu.com/")
@@ -27,6 +28,24 @@ public class OkURLTest {
 
         System.out.println("Server: " + response.header("Server"));
         System.out.println("Date: " + response.header("Date"));
+
+        System.out.println(response.body().string());
+    }
+
+    @Test
+    @Ignore
+    public void runPostForm() throws IOException {
+        RequestBody formBody = new FormBody.Builder()
+                .add("name", "Ricky")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/submit.do")
+                .post(formBody)
+                .build();
+
+        Response response = client.execute(request);
+        if (!response.isSuccessful())
+            throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
     }

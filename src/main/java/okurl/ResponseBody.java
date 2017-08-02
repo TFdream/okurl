@@ -1,12 +1,10 @@
 package okurl;
 
-import okurl.internal.BufferedStream;
+import okurl.internal.BufferedSource;
 import okurl.util.StreamUtils;
 import okurl.util.Util;
-
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 
 /**
@@ -14,7 +12,7 @@ import java.nio.charset.Charset;
  */
 public class ResponseBody implements Closeable {
 
-    final BufferedStream stream;
+    final BufferedSource source;
     final long contentLength;
     final String contentType;
 
@@ -23,13 +21,13 @@ public class ResponseBody implements Closeable {
     }
 
     ResponseBody(Builder builder) {
-        this.stream = builder.stream;
+        this.source = builder.source;
         this.contentLength = builder.contentLength;
         this.contentType = builder.contentType;
     }
 
-    public BufferedStream stream() {
-        return stream;
+    public BufferedSource source() {
+        return source;
     }
 
     public long getContentLength() {
@@ -46,7 +44,7 @@ public class ResponseBody implements Closeable {
             throw new IOException("Cannot buffer entire body for content length: " + contentLength);
         }
 
-        BufferedStream stream = stream();
+        BufferedSource stream = source();
         byte[] bytes;
         try {
             bytes = stream.readByteArray();
@@ -64,7 +62,7 @@ public class ResponseBody implements Closeable {
     }
 
     public final String string() throws IOException {
-        BufferedStream stream = stream();
+        BufferedSource stream = source();
         try {
             Charset charset = Util.bomAwareCharset(stream, charset());
             return stream.readString(charset);
@@ -79,11 +77,11 @@ public class ResponseBody implements Closeable {
 
     @Override
     public void close() throws IOException {
-        StreamUtils.closeQuietly(stream());
+        StreamUtils.closeQuietly(source());
     }
 
     public static class Builder {
-        private BufferedStream stream;
+        private BufferedSource source;
         private long contentLength;
         private String contentType;
 
@@ -91,8 +89,8 @@ public class ResponseBody implements Closeable {
             this.contentLength = -1;
         }
 
-        public Builder stream(InputStream in) {
-            this.stream = new BufferedStream(in);
+        public Builder source(BufferedSource source) {
+            this.source = source;
             return this;
         }
 

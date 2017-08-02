@@ -10,10 +10,10 @@ import java.nio.charset.Charset;
 /**
  * @author Ricky Fung
  */
-public class BufferedStream implements Closeable {
+public class BufferedSource implements Closeable {
     final InputStream in;
 
-    public BufferedStream(InputStream in) {
+    public BufferedSource(InputStream in) {
         this.in = in;
     }
 
