@@ -15,8 +15,8 @@ The minimum requirements to run the quick start are:
 ```
 <dependency>
     <groupId>com.mindflow</groupId>
-	<artifactId>okurl</artifactId>
-	<version>0.1.0</version>
+    <artifactId>okurl</artifactId>
+    <version>0.1.0</version>
 </dependency>
 ```
 
