@@ -49,11 +49,6 @@ public class FormBody extends RequestBody {
         private List<FormParam> params;
 
         public Builder add(String name, String value) {
-            addParam(name, value, false);
-            return this;
-        }
-
-        public Builder addEncoded(String name, String value) {
             addParam(name, value, true);
             return this;
         }
