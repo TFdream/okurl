@@ -1,7 +1,6 @@
 package okurl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Ricky Fung
@@ -24,4 +23,12 @@ public class Headers {
     public String get(String name) {
         return this.headers.get(name);
     }
+
+    /** Returns an immutable case-insensitive set of header names. */
+    public Set<String> names() {
+        TreeSet<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        result.addAll(headers.keySet());
+        return Collections.unmodifiableSet(result);
+    }
+
 }

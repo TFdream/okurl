@@ -1,6 +1,6 @@
 package okurl;
 
-import okurl.util.Utils;
+import okurl.util.Util;
 
 /**
  * @author Ricky Fung
@@ -99,10 +99,10 @@ public class Request {
         public Builder method(HttpMethod method, RequestBody body) {
             if (method == null)
                 throw new NullPointerException("method == null");
-            if (body != null && !Utils.permitsRequestBody(method)) {
+            if (body != null && !Util.permitsRequestBody(method)) {
                 throw new IllegalArgumentException("method " + method + " must not have a request body.");
             }
-            if (body == null && Utils.requiresRequestBody(method)) {
+            if (body == null && Util.requiresRequestBody(method)) {
                 throw new IllegalArgumentException("method " + method + " must have a request body.");
             }
             this.method = method;

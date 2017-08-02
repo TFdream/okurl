@@ -1,6 +1,6 @@
 package okurl;
 
-import okurl.util.Utils;
+import okurl.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,16 +26,10 @@ public class OkUrlClient implements Closeable {
         this.connectTimeout = builder.connectTimeout;
         this.writeTimeout = builder.writeTimeout;
         this.readTimeout = builder.readTimeout;
-        this.init();
-    }
-
-    private void init() {
-        System.setProperty("sun.net.client.defaultConnectTimeout", String.valueOf(connectTimeout));
-        System.setProperty("sun.net.client.defaultReadTimeout", String.valueOf(writeTimeout));
     }
 
     public Response execute(Request request) throws IOException {
-        return URLConnectionProxy.newCall(request);
+        return URLConnectionProxy.newCall(request, connectTimeout, readTimeout);
     }
 
     @Override
@@ -55,17 +49,17 @@ public class OkUrlClient implements Closeable {
         }
 
         public Builder connectTimeout(long timeout, TimeUnit unit) {
-            connectTimeout = Utils.checkDuration("timeout", timeout, unit);
+            connectTimeout = Util.checkDuration("timeout", timeout, unit);
             return this;
         }
 
         public Builder readTimeout(long timeout, TimeUnit unit) {
-            readTimeout = Utils.checkDuration("timeout", timeout, unit);
+            readTimeout = Util.checkDuration("timeout", timeout, unit);
             return this;
         }
 
         public Builder writeTimeout(long timeout, TimeUnit unit) {
-            writeTimeout = Utils.checkDuration("timeout", timeout, unit);
+            writeTimeout = Util.checkDuration("timeout", timeout, unit);
             return this;
         }
 

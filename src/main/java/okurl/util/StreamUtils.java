@@ -28,6 +28,23 @@ public abstract class StreamUtils {
         return byteCount;
     }
 
+    public static void close(InputStream input) throws IOException {
+        if(input != null) {
+            input.close();
+        }
+    }
+
+    public static void close(OutputStream output) throws IOException {
+        if(output != null) {
+            output.close();
+        }
+    }
+
+    public static void close(Closeable closeable) throws IOException {
+        if(closeable != null) {
+            closeable.close();
+        }
+    }
 
     public static void closeQuietly(InputStream input){
         closeQuietly((Closeable)input);

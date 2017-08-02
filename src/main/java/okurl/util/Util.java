@@ -1,13 +1,18 @@
 package okurl.util;
 
 import okurl.HttpMethod;
+import okurl.internal.BufferedStream;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Ricky Fung
  */
-public abstract class Utils {
+public abstract class Util {
+
+    public static final Charset UTF_8 = StandardCharsets.UTF_8;
 
     public static int checkDuration(String name, long duration, TimeUnit unit) {
         if (duration < 0) throw new IllegalArgumentException(name + " < 0");
@@ -27,5 +32,9 @@ public abstract class Utils {
     public static boolean permitsRequestBody(HttpMethod method) {
         return requiresRequestBody(method) || method == HttpMethod.DELETE;
 
+    }
+
+    public static Charset bomAwareCharset(BufferedStream stream, Charset charset) {
+        return charset;
     }
 }
