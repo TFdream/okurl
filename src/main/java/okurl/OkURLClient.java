@@ -1,6 +1,5 @@
 package okurl;
 
-import okurl.internal.URLRequestFacade;
 import okurl.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +28,23 @@ public class OkURLClient implements Closeable {
         this.readTimeout = builder.readTimeout;
     }
 
-    public Response execute(Request request) throws IOException {
-        return URLRequestFacade.newCall(request, connectTimeout, readTimeout);
+    /** Default connect timeout (in milliseconds). */
+    public int connectTimeoutMillis() {
+        return connectTimeout;
+    }
+
+    /** Default read timeout (in milliseconds). */
+    public int readTimeoutMillis() {
+        return readTimeout;
+    }
+
+    /** Default write timeout (in milliseconds). */
+    public int writeTimeoutMillis() {
+        return writeTimeout;
+    }
+
+    public Call newCall(Request request) {
+        return RealCall.newRealCall(this, request);
     }
 
     @Override

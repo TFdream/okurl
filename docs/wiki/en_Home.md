@@ -24,7 +24,7 @@
                 .addHeader("Cache-Control", "max-age=0")
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful())
             throw new IOException("Unexpected code:" + response.code());
 
@@ -45,7 +45,7 @@
                 .addHeader("Cache-Control", "max-age=0")
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful())
             throw new IOException("Unexpected code:" + response.code());
 
@@ -68,7 +68,7 @@
                 .post(formBody)
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful())
             throw new IOException("Unexpected code " + response);
 
@@ -97,7 +97,7 @@
                 .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
@@ -142,8 +142,9 @@
                 .post(requestBody)
                 .build();
 
-        Response response = client.execute(request);
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) 
+            throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
     }
@@ -165,7 +166,7 @@
                 .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, file))
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());

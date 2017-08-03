@@ -27,7 +27,7 @@ public class OkURLTest {
                 .addHeader("Cache-Control", "max-age=0")
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful())
             throw new IOException("Unexpected code:" + response.code());
 
@@ -44,7 +44,7 @@ public class OkURLTest {
                 .addHeader("Cache-Control", "max-age=0")
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful())
             throw new IOException("Unexpected code:" + response.code());
 
@@ -69,7 +69,7 @@ public class OkURLTest {
                 .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
@@ -86,13 +86,15 @@ public class OkURLTest {
                 .post(formBody)
                 .build();
 
-        Response response = client.execute(request);
+        Response response = client.newCall(request).execute();
         if (!response.isSuccessful())
             throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
     }
 
+    @Test
+    @Ignore
     public void runPostStream() throws Exception {
         RequestBody requestBody = new RequestBody() {
             @Override
@@ -123,12 +125,15 @@ public class OkURLTest {
                 .post(requestBody)
                 .build();
 
-        Response response = client.execute(request);
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful())
+            throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
     }
 
+    @Test
+    @Ignore
     public void runPostFile() throws Exception {
         File file = new File("README.md");
 
@@ -137,8 +142,9 @@ public class OkURLTest {
                 .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, file))
                 .build();
 
-        Response response = client.execute(request);
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful())
+            throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
     }
