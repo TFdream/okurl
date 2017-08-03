@@ -1,5 +1,6 @@
 package okurl.internal;
 
+import okurl.Headers;
 import okurl.Request;
 import okurl.Response;
 import okurl.ResponseBody;
@@ -35,8 +36,11 @@ public abstract class URLRequestFacade {
         }
 
         //add request Header
-        for(String headerName : request.getHeaders().names()) {
-            httpURLConnection.setRequestProperty(headerName, request.getHeaders().get(headerName));
+        Headers headers = request.getHeaders();
+        if(headers!=null) {
+            for(Map.Entry<String, String> me : headers.headerFields().entrySet()) {
+                httpURLConnection.setRequestProperty(me.getKey(), me.getValue());
+            }
         }
 
         // set request method

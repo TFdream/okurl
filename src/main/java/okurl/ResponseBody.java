@@ -62,12 +62,15 @@ public class ResponseBody implements Closeable {
     }
 
     public final String string() throws IOException {
-        BufferedSource stream = source();
+        return string(Util.bomAwareCharset(source(), charset()));
+    }
+
+    public final String string(Charset charset) throws IOException {
+        BufferedSource source = source();
         try {
-            Charset charset = Util.bomAwareCharset(stream, charset());
-            return stream.readString(charset);
+            return source.readString(charset != null ? charset : Util.UTF_8);
         } finally {
-            StreamUtils.closeQuietly(stream);
+            StreamUtils.closeQuietly(source);
         }
     }
 

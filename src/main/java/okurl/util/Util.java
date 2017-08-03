@@ -39,7 +39,7 @@ public abstract class Util {
 
     }
 
-    public static Charset bomAwareCharset(BufferedSource stream, Charset charset) {
+    public static Charset bomAwareCharset(BufferedSource source, Charset charset) {
         return charset;
     }
 

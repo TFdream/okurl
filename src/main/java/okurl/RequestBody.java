@@ -1,8 +1,13 @@
 package okurl;
 
 import okurl.internal.BufferedSink;
+import okurl.util.StreamUtils;
 import okurl.util.Util;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 /**
@@ -52,6 +57,34 @@ public abstract class RequestBody {
             @Override
             public void writeTo(BufferedSink sink) throws IOException {
                 sink.write(content, offset, byteCount);
+            }
+        };
+    }
+
+    /** Returns a new request body that transmits the content of {@code file}. */
+    public static RequestBody create(final MediaType contentType, final File file) {
+        if (file == null) throw new NullPointerException("content == null");
+
+        return new RequestBody() {
+            @Override
+            public MediaType contentType() {
+                return contentType;
+            }
+
+            @Override
+            public long contentLength() {
+                return file.length();
+            }
+
+            @Override
+            public void writeTo(BufferedSink sink) throws IOException {
+                InputStream source = null;
+                try {
+                    source = new FileInputStream(file);
+                    sink.writeAll(source);
+                } finally {
+                    StreamUtils.closeQuietly(source);
+                }
             }
         };
     }

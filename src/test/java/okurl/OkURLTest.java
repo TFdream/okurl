@@ -1,14 +1,19 @@
 package okurl;
 
+import okurl.internal.BufferedSink;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
  * @author Ricky Fung
  */
 public class OkURLTest {
+
+    public static final MediaType MEDIA_TYPE_MARKDOWN
+            = MediaType.parse("text/x-markdown; charset=utf-8");
 
     private final OkURLClient client = new OkURLClient();
 
@@ -50,6 +55,28 @@ public class OkURLTest {
 
     @Test
     @Ignore
+    public void runPostString() throws IOException {
+        String postBody = ""
+                + "Releases\n"
+                + "--------\n"
+                + "\n"
+                + " * _1.0_ May 6, 2013\n"
+                + " * _1.1_ June 15, 2013\n"
+                + " * _1.2_ August 11, 2013\n";
+
+        Request request = new Request.Builder()
+                .url("https://localhost:8080/markdown")
+                .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
+                .build();
+
+        Response response = client.execute(request);
+        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+        System.out.println(response.body().string());
+    }
+
+    @Test
+    @Ignore
     public void runPostForm() throws IOException {
         RequestBody formBody = new FormBody.Builder()
                 .add("name", "Ricky")
@@ -62,6 +89,56 @@ public class OkURLTest {
         Response response = client.execute(request);
         if (!response.isSuccessful())
             throw new IOException("Unexpected code " + response);
+
+        System.out.println(response.body().string());
+    }
+
+    public void runPostStream() throws Exception {
+        RequestBody requestBody = new RequestBody() {
+            @Override
+            public MediaType contentType() {
+                return MEDIA_TYPE_MARKDOWN;
+            }
+
+            @Override
+            public void writeTo(BufferedSink sink) throws IOException {
+                sink.writeUtf8("Numbers\n");
+                sink.writeUtf8("-------\n");
+                for (int i = 2; i <= 997; i++) {
+                    sink.writeUtf8(String.format(" * %s = %s\n", i, factor(i)));
+                }
+            }
+
+            private String factor(int n) {
+                for (int i = 2; i < n; i++) {
+                    int x = n / i;
+                    if (x * i == n) return factor(x) + " × " + i;
+                }
+                return Integer.toString(n);
+            }
+        };
+
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/markdown")
+                .post(requestBody)
+                .build();
+
+        Response response = client.execute(request);
+        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+        System.out.println(response.body().string());
+    }
+
+    public void runPostFile() throws Exception {
+        File file = new File("README.md");
+
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/markdown")
+                .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, file))
+                .build();
+
+        Response response = client.execute(request);
+        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
     }
