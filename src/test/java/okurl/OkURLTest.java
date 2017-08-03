@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class OkURLTest {
 
-    private final OkURLClient2 client = new OkURLClient2();
+    private final OkURLClient client = new OkURLClient();
 
     @Test
     public void runGet() throws IOException {

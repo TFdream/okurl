@@ -12,18 +12,18 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Ricky Fung
  */
-public class OkURLClient2 implements Closeable {
+public class OkURLClient implements Closeable {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final int connectTimeout;
     private final int writeTimeout;
     private final int readTimeout;
 
-    public OkURLClient2() {
+    public OkURLClient() {
         this(new Builder());
     }
 
-    public OkURLClient2(Builder builder) {
+    public OkURLClient(Builder builder) {
         this.connectTimeout = builder.connectTimeout;
         this.writeTimeout = builder.writeTimeout;
         this.readTimeout = builder.readTimeout;
@@ -68,8 +68,8 @@ public class OkURLClient2 implements Closeable {
             return this;
         }
 
-        public OkURLClient2 build() {
-            return new OkURLClient2(this);
+        public OkURLClient build() {
+            return new OkURLClient(this);
         }
     }
 }
