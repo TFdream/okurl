@@ -21,7 +21,7 @@ public class BufferedSource implements Closeable {
         ByteArrayOutputStream baos = null;
         try {
             baos = new ByteArrayOutputStream(1024);
-            StreamUtils.copy(in, baos);
+            StreamUtils.copy(this.in, baos);
             return baos.toByteArray();
         } finally {
             StreamUtils.closeQuietly(baos);
@@ -35,7 +35,7 @@ public class BufferedSource implements Closeable {
 
     @Override
     public void close() throws IOException {
-        StreamUtils.close(in);
+        StreamUtils.close(this.in);
     }
 
 }

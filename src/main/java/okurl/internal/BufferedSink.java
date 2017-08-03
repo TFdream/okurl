@@ -16,15 +16,19 @@ public class BufferedSink implements Closeable {
     }
 
     public void write(byte[] b) throws IOException {
-        out.write(b);
+        this.out.write(b);
     }
 
     public void write(byte b[], int off, int len) throws IOException {
-        out.write(b, off, len);
+        this.out.write(b, off, len);
+    }
+
+    public void flush() throws IOException {
+        this.out.flush();;
     }
 
     @Override
     public void close() throws IOException {
-        StreamUtils.close(out);
+        StreamUtils.close(this.out);
     }
 }

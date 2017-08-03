@@ -1,19 +1,21 @@
-package okurl;
+# Home
 
-import org.junit.Ignore;
-import org.junit.Test;
+## 依赖
+```
+<dependency>
+    <groupId>com.mindflow</groupId>
+    <artifactId>okurl</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
 
-import java.io.IOException;
+## 快速入门
 
-/**
- * @author Ricky Fung
- */
-public class OkURLTest {
+### 1. 发送Get请求
+```
+    private final OkURLClient client = new OkURLClient();
 
-    private final OkURLClient2 client = new OkURLClient2();
-
-    @Test
-    public void runGet() throws IOException {
+    public void run() throws IOException {
 
         Request request = new Request.Builder()
                 .url("https://www.baidu.com/")
@@ -28,9 +30,13 @@ public class OkURLTest {
 
         System.out.println(response.body().string());
     }
+```
 
-    @Test
-    public void runAccessHeader() throws IOException {
+### 2. 获取HTTP响应头信息
+```
+    private final OkURLClient client = new OkURLClient();
+
+    public void run() throws IOException {
 
         Request request = new Request.Builder()
                 .url("https://www.baidu.com/")
@@ -47,9 +53,12 @@ public class OkURLTest {
         System.out.println("Date: " + response.header("Date"));
         System.out.println("Expires: " + response.header("Expires"));
     }
+```
 
-    @Test
-    @Ignore
+### 3. 发送表单请求
+```
+    private final OkURLClient client = new OkURLClient();
+
     public void runPostForm() throws IOException {
         RequestBody formBody = new FormBody.Builder()
                 .add("name", "Ricky")
@@ -65,4 +74,10 @@ public class OkURLTest {
 
         System.out.println(response.body().string());
     }
-}
+```
+
+### 4. Post字符串
+
+### 5. Post字节流
+
+### 6. 上传文件

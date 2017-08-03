@@ -1,5 +1,6 @@
 package okurl;
 
+import okurl.internal.URLRequestFacade;
 import okurl.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,30 +12,34 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Ricky Fung
  */
-public class OkUrlClient implements Closeable {
+public class OkURLClient2 implements Closeable {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final int connectTimeout;
     private final int writeTimeout;
     private final int readTimeout;
 
-    public OkUrlClient() {
+    public OkURLClient2() {
         this(new Builder());
     }
 
-    public OkUrlClient(Builder builder) {
+    public OkURLClient2(Builder builder) {
         this.connectTimeout = builder.connectTimeout;
         this.writeTimeout = builder.writeTimeout;
         this.readTimeout = builder.readTimeout;
     }
 
     public Response execute(Request request) throws IOException {
-        return URLConnectionProxy.newCall(request, connectTimeout, readTimeout);
+        return URLRequestFacade.newCall(request, connectTimeout, readTimeout);
     }
 
     @Override
     public void close() throws IOException {
+        destroy();
+    }
 
+    public void destroy() {
+        logger.debug("destroy");
     }
 
     public static class Builder {
@@ -63,8 +68,8 @@ public class OkUrlClient implements Closeable {
             return this;
         }
 
-        public OkUrlClient build() {
-            return new OkUrlClient(this);
+        public OkURLClient2 build() {
+            return new OkURLClient2(this);
         }
     }
 }
