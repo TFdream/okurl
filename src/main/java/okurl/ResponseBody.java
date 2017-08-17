@@ -62,7 +62,7 @@ public class ResponseBody implements Closeable {
     }
 
     public final String string() throws IOException {
-        return string(Util.bomAwareCharset(source(), charset()));
+        return string(charset());
     }
 
     public final String string(Charset charset) throws IOException {

@@ -1,21 +1,24 @@
-# Home
+package okurl;
 
-## Dependencies
-```
-<dependency>
-    <groupId>com.mindflow</groupId>
-    <artifactId>okurl</artifactId>
-    <version>0.1.0</version>
-</dependency>
-```
+import okurl.internal.BufferedSink;
+import org.junit.Ignore;
+import org.junit.Test;
 
-## Quick Start
+import java.io.File;
+import java.io.IOException;
 
-### 1. Synchronous Get
-```
+/**
+ * @author Ricky Fung
+ */
+public class OkURLClientTest {
+
+    public static final MediaType MEDIA_TYPE_MARKDOWN
+            = MediaType.parse("text/x-markdown; charset=utf-8");
+
     private final OkURLClient client = new OkURLClient();
 
-    public void run() throws IOException {
+    @Test
+    public void runGet() throws IOException {
 
         Request request = new Request.Builder()
                 .url("https://www.baidu.com/")
@@ -30,13 +33,9 @@
 
         System.out.println(response.body().string());
     }
-```
 
-### 2. Access Headers
-```
-    private final OkURLClient client = new OkURLClient();
-
-    public void run() throws IOException {
+    @Test
+    public void runAccessHeader() throws IOException {
 
         Request request = new Request.Builder()
                 .url("https://www.baidu.com/")
@@ -53,36 +52,9 @@
         System.out.println("Date: " + response.header("Date"));
         System.out.println("Expires: " + response.header("Expires"));
     }
-```
 
-### 3. Post form
-```
-    private final OkURLClient client = new OkURLClient();
-
-    public void runPostForm() throws IOException {
-        RequestBody formBody = new FormBody.Builder()
-                .add("name", "Ricky")
-                .build();
-        Request request = new Request.Builder()
-                .url("http://localhost:8080/submit.do")
-                .post(formBody)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        if (!response.isSuccessful())
-            throw new IOException("Unexpected code " + response);
-
-        System.out.println(response.body().string());
-    }
-```
-
-### 4. Post a String
-```
-    public static final MediaType MEDIA_TYPE_MARKDOWN
-            = MediaType.parse("text/x-markdown; charset=utf-8");
-            
-    private final OkURLClient client = new OkURLClient();
-    
+    @Test
+    @Ignore
     public void runPostString() throws IOException {
         String postBody = ""
                 + "Releases\n"
@@ -103,15 +75,26 @@
         System.out.println(response.body().string());
     }
 
-```
+    @Test
+    @Ignore
+    public void runPostForm() throws IOException {
+        RequestBody formBody = new FormBody.Builder()
+                .add("name", "Ricky")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/submit.do")
+                .post(formBody)
+                .build();
 
-### 5. Post Streaming
-```
-    public static final MediaType MEDIA_TYPE_MARKDOWN
-            = MediaType.parse("text/x-markdown; charset=utf-8");
-            
-    private final OkURLClient client = new OkURLClient();
-    
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful())
+            throw new IOException("Unexpected code " + response);
+
+        System.out.println(response.body().string());
+    }
+
+    @Test
+    @Ignore
     public void runPostStream() throws Exception {
         RequestBody requestBody = new RequestBody() {
             @Override
@@ -143,21 +126,14 @@
                 .build();
 
         Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()) 
+        if (!response.isSuccessful())
             throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
     }
 
-```
-
-### 6. Post a File
-```
-    public static final MediaType MEDIA_TYPE_MARKDOWN
-            = MediaType.parse("text/x-markdown; charset=utf-8");
-            
-    private final OkURLClient client = new OkURLClient();
-    
+    @Test
+    @Ignore
     public void runPostFile() throws Exception {
         File file = new File("README.md");
 
@@ -167,8 +143,9 @@
                 .build();
 
         Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+        if (!response.isSuccessful())
+            throw new IOException("Unexpected code " + response);
 
         System.out.println(response.body().string());
     }
-```
+}

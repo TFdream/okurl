@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,6 +20,7 @@ public class OkURLClient implements Closeable {
     private final int connectTimeout;
     private final int writeTimeout;
     private final int readTimeout;
+    private final List<Interceptor> interceptors;
 
     public OkURLClient() {
         this(new Builder());
@@ -26,6 +30,7 @@ public class OkURLClient implements Closeable {
         this.connectTimeout = builder.connectTimeout;
         this.writeTimeout = builder.writeTimeout;
         this.readTimeout = builder.readTimeout;
+        this.interceptors = Collections.unmodifiableList(builder.interceptors);
     }
 
     /** Default connect timeout (in milliseconds). */
@@ -56,10 +61,15 @@ public class OkURLClient implements Closeable {
         logger.debug("destroy");
     }
 
+    public List<Interceptor> interceptors() {
+        return interceptors;
+    }
+
     public static class Builder {
         private int connectTimeout;
         private int writeTimeout;
         private int readTimeout;
+        private final List<Interceptor> interceptors = new ArrayList<>();
 
         public Builder() {
             this.connectTimeout = 10 * 1000;
@@ -79,6 +89,11 @@ public class OkURLClient implements Closeable {
 
         public Builder writeTimeout(long timeout, TimeUnit unit) {
             writeTimeout = Util.checkDuration("timeout", timeout, unit);
+            return this;
+        }
+
+        public Builder addInterceptor(Interceptor interceptor) {
+            interceptors.add(interceptor);
             return this;
         }
 

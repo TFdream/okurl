@@ -39,10 +39,6 @@ public abstract class Util {
 
     }
 
-    public static Charset bomAwareCharset(BufferedSource source, Charset charset) {
-        return charset;
-    }
-
     public static String encode(String data) {
         try {
             return URLEncoder.encode(data, UTF8);
